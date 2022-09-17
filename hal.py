@@ -5,7 +5,7 @@ def temperatura():
     return random.randrange(2, 32)
 
 def umidade():
-    return radom.randrange(10, 100)
+    return random.randrange(10, 100)
 
 def aquecedor(estado: str):
     if estado == 'on':
