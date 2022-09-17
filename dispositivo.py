@@ -1,12 +1,13 @@
 import paho.mqtt.client as mqtt
 import time
 
-    
+
 usuario = ''
 password = ''
 client_id = 'xuxumelancia'
 server = 'broker.mqttdashboard.com'
 port = 1883
+
 
 client = mqtt.Client(client_id)
 client.username_pw_set(usuario, password)  
