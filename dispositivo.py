@@ -5,8 +5,9 @@ from definitions import usuario, password, client_id, server, port
 
 
 def mensagem(client, user, msg):
-    if msg.topic == 'pucpr/iotmc/alarcon/aquecedor':
-        aquecedor(msg.payload.decode())
+    vetor = msg.payload.decode().split(',')
+    aquecedor('on' if vetor[1] == '1' else 'off')
+    client.publish(f'v1/{usuario}/things/{client_id}/response', f'ok,{vetor[0]}')
 
 # Conexão inicial
 client = mqtt.Client(client_id)
@@ -14,13 +15,13 @@ client.username_pw_set(usuario, password)
 client.connect(server, port)
 
 client.on_message = mensagem
-client.subscribe('pucpr/iotmc/alarcon/aquecedor')
+client.subscribe(f'v1/{usuario}/things/{client_id}/cmd/2')
 client.loop_start()
 
 # Comportamento do sistema
 while True:
-    client.publish('pucpr/iotmc/alarcon/temperatura', temperatura())
-    client.publish('pucpr/iotmc/alarcon/umidade', umidade())
-    time.sleep(5)
+    client.publish(f'v1/{usuario}/things/{client_id}/data/0', temperatura())
+    client.publish(f'v1/{usuario}/things/{client_id}/data/1', umidade())
+    time.sleep(10)
   
 # client.disconnect()
